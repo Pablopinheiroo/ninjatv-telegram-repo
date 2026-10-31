@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: telegramninja-test-extension
+  group: telegramninja-test-extension-v2
   cancel-in-progress: true
 
 jobs:
