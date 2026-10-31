@@ -1,19 +1,33 @@
-# NinjaTV Telegram
+# TelegramNinja — teste de autenticação TDLib
 
-Repositório público de distribuição da integração Telegram para NinjaTV.
+Repositório de distribuição de uma extensão experimental para NinjaTV/CloudStream.
 
-## Situação
+## Teste atual
 
-Ainda não há uma extensão instalável publicada aqui. O pacote só será adicionado depois que:
+A primeira compilação contém somente o grupo **Um Trabalho do Inferno** (`t.me/umtrabalhodoinferno`). A extensão tenta executar a TDLib dentro do próprio carregador de plugins do NinjaTV, sem instalar o aplicativo auxiliar.
 
-1. O aplicativo auxiliar Android compilar e for testado.
-2. A integração TDLib conseguir autenticar a conta do usuário e listar apenas chats acessíveis por essa conta.
-3. A ponte local entregar os arquivos com suporte a HTTP Range.
-4. A extensão NinjaTV conseguir localizar os vídeos e abrir o fluxo no player nativo.
+O pacote de teste deverá validar, nesta ordem:
 
-## Separação dos projetos
+1. Carregamento das classes Java e bibliotecas nativas TDLib dentro do `.cs3`.
+2. Autenticação da conta Telegram diretamente nas configurações da extensão.
+3. Leitura das últimas 100 mensagens do grupo e identificação de vídeos.
+4. Exibição dos vídeos como episódios da série de teste.
+5. Download do vídeo pelo TDLib e abertura pelo player do NinjaTV.
 
-- Código-fonte e aplicativo auxiliar: [ninjatv-telegram](https://github.com/Pablopinheiroo/ninjatv-telegram) (privado).
-- Arquivos públicos de distribuição: este repositório.
+**Importante:** esta versão é apenas um teste técnico. A reprodução de teste baixa o arquivo para o armazenamento privado antes de abrir o player; ainda não é o streaming por intervalos pretendido para a versão final.
 
-Não coloque neste repositório chaves, códigos de autenticação, sessões do Telegram ou dados privados. Use a integração somente com conteúdo ao qual sua conta tenha acesso e que você tenha autorização para reproduzir.
+## Instalação no NinjaTV
+
+Depois que a compilação publicar os arquivos `repo.json`, `plugins.json` e `.cs3`, adicione ao NinjaTV somente:
+
+`https://raw.githubusercontent.com/Pablopinheiroo/ninjatv-telegram-repo/main/repo.json`
+
+Instale a extensão de teste. Na configuração da extensão, informe o API ID e API Hash do seu aplicativo em my.telegram.org/apps; depois siga as solicitações de telefone, código e senha 2FA, caso exista.
+
+A sessão e as credenciais são armazenadas criptografadas no armazenamento privado do Android. Não são gravadas no repositório.
+
+## Privacidade e uso
+
+O código-fonte principal continua no repositório privado `ninjatv-telegram`. Este repositório público contém somente o protótipo necessário para distribuir e testar a extensão.
+
+Não publique API Hash, códigos de autenticação, senha 2FA ou arquivos de sessão. Use a integração apenas em grupos dos quais sua conta participa e com conteúdo que você tem autorização para acessar e reproduzir.
