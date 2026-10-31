@@ -3,6 +3,7 @@ package com.pablopinheiroo.telegramninjaprobe
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
+import android.os.Process
 import java.io.File
 
 /**
@@ -32,7 +33,12 @@ object NativeBundle {
             }.toList()
         }
 
-        val selectedAbi = Build.SUPPORTED_ABIS.firstOrNull { abi ->
+        val processIs64Bit = Process.is64Bit()
+        val processAbis = Build.SUPPORTED_ABIS.filter { abi ->
+            if (processIs64Bit) abi == "arm64-v8a" || abi == "x86_64"
+            else abi == "armeabi-v7a" || abi == "x86"
+        }
+        val selectedAbi = processAbis.firstOrNull { abi ->
             entries.any { it.abi == abi }
         } ?: throw IllegalStateException(
             "Este aparelho não possui ABI incluída no teste. ABIs do aparelho: " +
