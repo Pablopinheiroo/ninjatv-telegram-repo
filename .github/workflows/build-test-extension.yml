@@ -64,6 +64,8 @@ jobs:
 
           docker buildx build \
             --build-arg COMMIT_HASH="$TDLIB_COMMIT" \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
             --output type=local,dest="$GITHUB_WORKSPACE/tdlib-output" .
 
           mkdir -p "$RUNNER_TEMP/tdlib-package"
@@ -80,6 +82,21 @@ jobs:
           LIB_ROOT="$RUNNER_TEMP/tdlib-package/tdlib/libs"
           test -d "$LIB_ROOT/arm64-v8a"
           test -d "$LIB_ROOT/armeabi-v7a"
+          test -s "$LIB_ROOT/arm64-v8a/libtdjni.so"
+          test -s "$LIB_ROOT/armeabi-v7a/libtdjni.so"
+
+          # Validate the ELF architecture before embedding the native libraries.
+          ARM64_MACHINE="$(readelf -h "$LIB_ROOT/arm64-v8a/libtdjni.so" | awk -F: '/Machine:/ {gsub(/^[[:space:]]+/, "", $2); print $2}')"
+          ARMV7_MACHINE="$(readelf -h "$LIB_ROOT/armeabi-v7a/libtdjni.so" | awk -F: '/Machine:/ {gsub(/^[[:space:]]+/, "", $2); print $2}')"
+          test "$ARM64_MACHINE" = "AArch64"
+          test "$ARMV7_MACHINE" = "ARM"
+          echo "arm64-v8a ELF machine: $ARM64_MACHINE"
+          echo "armeabi-v7a ELF machine: $ARMV7_MACHINE"
+          echo "TDLib arm64 dynamic dependencies:"
+          readelf -d "$LIB_ROOT/arm64-v8a/libtdjni.so" | grep NEEDED || true
+          echo "TDLib armv7 dynamic dependencies:"
+          readelf -d "$LIB_ROOT/armeabi-v7a/libtdjni.so" | grep NEEDED || true
+
           mkdir -p "$MODULE/src/main/res/raw"
 
           python3 - "$LIB_ROOT" "$MODULE/src/main/res/raw" <<'PY'
@@ -125,7 +142,8 @@ jobs:
           p = pathlib.Path("dist/plugins.json")
           data = json.loads(p.read_text(encoding="utf-8"))
           assert len(data) == 1, f"Expected exactly one test plugin, found {len(data)}"
-          print("Plugin index validated:", data[0].get("name"), data[0].get("url"))
+          assert data[0].get("version") == 3, f"Expected plugin version 3, got {data[0].get('version')}"
+          print("Plugin index validated:", data[0].get("name"), data[0].get("version"), data[0].get("url"))
           repo = json.loads(pathlib.Path("dist/repo.json").read_text(encoding="utf-8"))
           assert repo["pluginLists"][0].endswith("/plugins.json")
           PY
