@@ -1,0 +1,8 @@
+{
+  "name": "TelegramNinja Teste",
+  "description": "Extensão experimental para testar login TDLib e o grupo Um Trabalho do Inferno.",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/Pablopinheiroo/ninjatv-telegram-repo/main/plugins.json"
+  ]
+}
