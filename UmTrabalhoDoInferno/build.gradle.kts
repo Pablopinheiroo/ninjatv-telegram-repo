@@ -1,6 +1,6 @@
-version = 2
+version = 3
 cloudstream {
-    description = "Teste privado de autenticação TDLib e leitura do grupo Um Trabalho do Inferno."
+    description = "Teste TDLib com credenciais recuperadas de repositório GitHub privado."
     authors = listOf("Pablopinheiroo")
     status = 3
     tvTypes = listOf("TvSeries")
