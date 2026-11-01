@@ -1,9 +1,9 @@
 [
     {
-        "fileHash": "sha256-ffbbee6c0bb8d0e3251c6453702dbb1844cbd3b1bd0a2668646394feccffba0a",
+        "fileHash": "sha256-4d66faabb6d5d9ecc038feed07e31f1a10b07ccc2db27de76d29e9cc3dcdb659",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/Pablopinheiroo/ninjatv-telegram-repo",
-        "fileSize": 18204734,
+        "fileSize": 18204849,
         "status": 3,
         "language": "pt-BR",
         "authors": [
@@ -12,7 +12,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 1,
+        "version": 2,
         "internalName": "UmTrabalhoDoInferno",
         "description": "Teste privado de autentica\u00e7\u00e3o TDLib e leitura do grupo Um Trabalho do Inferno.",
         "url": "https://raw.githubusercontent.com/Pablopinheiroo/ninjatv-telegram-repo/main/UmTrabalhoDoInferno.cs3",
