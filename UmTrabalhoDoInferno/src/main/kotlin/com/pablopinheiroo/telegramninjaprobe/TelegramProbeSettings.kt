@@ -38,7 +38,6 @@ object TelegramProbeSettings {
     }
 
     private fun showMainMenu(context: Context, clientId: String) {
-        val vault = ProbeVault(context.applicationContext)
         AlertDialog.Builder(context)
             .setTitle("TelegramNinja — GitHub privado")
             .setMessage(
