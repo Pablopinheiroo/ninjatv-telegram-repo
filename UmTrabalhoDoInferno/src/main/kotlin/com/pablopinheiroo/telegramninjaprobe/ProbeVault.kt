@@ -43,6 +43,11 @@ class ProbeVault(context: Context) {
     }
 
     @Synchronized
+    fun removeString(name: String) {
+        preferences.edit().remove(name).apply()
+    }
+
+    @Synchronized
     fun getOrCreateBytes(name: String, size: Int): ByteArray {
         val current = getString(name)?.let {
             runCatching { Base64.decode(it, Base64.NO_WRAP) }.getOrNull()
