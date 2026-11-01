@@ -17,12 +17,10 @@ import android.widget.Toast
 object TelegramProbeSettings {
     private val mainHandler = Handler(Looper.getMainLooper())
     @Volatile private var lastPrompt = ""
+    @Volatile private var pluginResources: android.content.res.Resources? = null
 
     fun initialize(resources: android.content.res.Resources?) {
-        TelegramSession.initialize(
-            resources?.let { TelegramSessionContextHolder.context },
-            resources
-        )
+        pluginResources = resources
     }
 
     fun open(context: Context) {
@@ -194,7 +192,7 @@ object TelegramProbeSettings {
             try {
                 val nativeStatus = NativeBundle.ensureLoaded(
                     context.applicationContext,
-                    TelegramSession.pluginResources()
+                    pluginResources
                 )
                 mainHandler.post {
                     Toast.makeText(context, nativeStatus, Toast.LENGTH_LONG).show()
