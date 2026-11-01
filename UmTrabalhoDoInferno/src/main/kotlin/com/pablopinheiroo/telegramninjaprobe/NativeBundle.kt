@@ -20,7 +20,7 @@ object NativeBundle {
         val pluginResources = resources
             ?: throw IllegalStateException("O pacote de teste não disponibilizou os recursos nativos.")
 
-        val manifestId = pluginResources.getIdentifier("native_manifest", "raw", null)
+        // CS3 plugin resources are loaded from a separate APK asset path. Their package\n        // is the Gradle namespace, not the host NinjaTV application package.\n        val manifestId = pluginResources.getIdentifier(\n            "native_manifest", "raw", RESOURCE_PACKAGE\n        )
         if (manifestId == 0) {
             throw IllegalStateException("Manifesto das bibliotecas nativas não encontrado no pacote.")
         }
@@ -65,7 +65,7 @@ object NativeBundle {
             require(entry.fileName.matches(Regex("^[A-Za-z0-9_.-]+\\.so$"))) {
                 "Nome de biblioteca inválido no manifesto."
             }
-            val resourceId = pluginResources.getIdentifier(entry.resourceName, "raw", null)
+            val resourceId = pluginResources.getIdentifier(\n                entry.resourceName, "raw", RESOURCE_PACKAGE\n            )
             if (resourceId == 0) {
                 throw IllegalStateException("Biblioteca ${entry.fileName} ausente do pacote.")
             }
@@ -99,7 +99,7 @@ object NativeBundle {
         return "Bibliotecas TDLib carregadas com sucesso ($selectedAbi)."
     }
 
-    private data class NativeEntry(
+    private const val RESOURCE_PACKAGE = "com.pablopinheiroo.telegramninjaprobe"\n\n    private data class NativeEntry(
         val abi: String,
         val resourceName: String,
         val fileName: String
